@@ -7,7 +7,7 @@
                 <h1 class="fw-light">@section('title')Главная страница@show</h1>
                 <p class="lead text-muted">@section('description')Вы на главной странице сайта@show</p>
                 <p>
-                    <a href="{{route('admin.index')}}" class="btn btn-primary my-2">Авторизоваться</a>
+                    <a href="{{route('login.')}}" class="btn btn-primary my-2">Страница авторизации</a>
                     <a href="{{route('news.')}}" class="btn btn-secondary my-2">Новости</a>
                 </p>
             </div>

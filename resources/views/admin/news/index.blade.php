@@ -9,4 +9,18 @@
             </div>
         </div>
     </div>
+    <h3>Скачать новости</h3>
+    <form action="{{route('admin.news.download')}}" method="post">
+        @csrf
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                <x-alert type="danger" :message="$error"></x-alert>
+            @endforeach
+        @endif
+        <div class="form-group">
+            <label for="count">Число новостей</label>
+            <input id="count" class="form-control" type="text" name="count" placeholder="count" value="{{old('count')}}"><br/>
+            <button class="btn btn-primary my-2">Скачать</button>
+        </div>
+    </form>
 @endsection

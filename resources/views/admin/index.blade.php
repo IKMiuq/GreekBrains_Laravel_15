@@ -5,12 +5,7 @@
         <h1 class="h2">Админ панель</h1>
     </div>
     <div>
-        <p class='ta-center'>Форма авторизации</p>
-        <form action="auth">
-            <input type="text" name="login" placeholder="login"><br/>
-            <input type="text" name="password" placeholder="password"><br/>
-            <button>Авторизоваться</button>
-        </form>
+        <h1>Привет, Админ!</h1>
     </div>
 
 @endsection
