@@ -40,11 +40,11 @@ Route::group(
                 'as' => 'categories.'
             ],
             function () {
-                Route::get('/index', [
+                Route::get('/', [
                     'uses' => 'CategoryController@index',
                     'as' => 'index'
                 ]);
-                Route::put('/edit', [
+                Route::get('/edit', [
                     'uses' => 'CategoryController@edit',
                     'as' => 'edit'
                 ]);
@@ -56,6 +56,10 @@ Route::group(
                     'uses' => 'CategoryController@store',
                     'as' => 'store'
                 ]);
+                Route::post('/delete', [
+                    'uses' => 'CategoryController@delete',
+                    'as' => 'delete'
+                ]);
             }
         );
         Route::group(
@@ -64,7 +68,7 @@ Route::group(
                 'as' => 'news.'
             ],
             function () {
-                Route::get('/index', [
+                Route::get('/', [
                     'uses' => 'NewsController@index',
                     'as' => 'index'
                 ]);
@@ -72,7 +76,7 @@ Route::group(
                     'uses' => 'NewsController@download',
                     'as' => 'download'
                 ]);
-                Route::put('/edit', [
+                Route::get('/edit', [
                     'uses' => 'NewsController@edit',
                     'as' => 'edit'
                 ]);

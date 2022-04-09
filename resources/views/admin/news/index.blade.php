@@ -9,6 +9,36 @@
             </div>
         </div>
     </div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>#ID</th>
+                <th>Заголовок</th>
+                <th>Описание</th>
+                <th>Опции</th>
+            </tr>
+            </thead>
+            <tbody>
+            @forelse($news as $new)
+                <tr>
+                    <th>{{$new->id}}</th>
+                    <th>{{$new->title}}</th>
+                    <th>{{$new->description}}</th>
+                    <th>
+                        <a href="{{route('admin.news.edit', ['news' => $new->id])}}">Ред.</a>
+                        &nbsp;
+                        <a class="text-danger" href="{{route('admin.categories.delete', ['id' => $new->id])}}">Уд.</a>
+                    </th>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4">Записей нет</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
     <h3>Скачать новости</h3>
     <form action="{{route('admin.news.download')}}" method="post">
         @csrf

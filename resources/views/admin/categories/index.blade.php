@@ -9,4 +9,34 @@
             </div>
         </div>
     </div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>Заголовок</th>
+                    <th>Описание</th>
+                    <th>Опции</th>
+                </tr>
+            </thead>
+            <tbody>
+            @forelse($categories as $category)
+                <tr>
+                    <th>{{$category->id}}</th>
+                    <th>{{$category->title}}</th>
+                    <th>{{$category->description}}</th>
+                    <th>
+                        <a href="{{route('admin.categories.edit', ['category' => $category->id])}}">Ред.</a>
+                        &nbsp;
+                        <a class="text-danger" href="{{route('admin.categories.delete', ['id' => $category->id])}}">Уд.</a>
+                    </th>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4">Записей нет</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
 @endsection

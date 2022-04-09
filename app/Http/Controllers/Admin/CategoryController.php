@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        return view('admin.categories.index');
+        $category = app(Category::class);
+        return view('admin.categories.index', ['categories' => $category->getCategories()]);
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-        return view('admin.categories.edit');
+        $news = app(Category::class);
+        return view('admin.categories.edit', ['category' => $news->getCategoryById($request->get('category'))[0]]);
     }
 
     public function create()
@@ -23,6 +26,14 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string']
+        ]);
+        dd($_REQUEST);
+    }
+
+    public function delete(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string']

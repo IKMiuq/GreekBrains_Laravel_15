@@ -3,24 +3,28 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
     public function index()
     {
-        return view('admin.news.index');
+        $news = app(News::class);
+        return view('admin.news.index', ['news' => $news->getNews()]);
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-        return view('admin.news.edit');
+        $news = app(News::class);
+        return view('admin.news.edit', ['news' => $news->getNewsById($request->get('news'))[0]]);
     }
 
     public function create()
     {
         return view('admin.news.create');
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -37,8 +41,8 @@ class NewsController extends Controller
         $request->validate([
             'count' => ['required', 'integer']
         ]);
-        $newsAll = $this->getNews(0, 0, $request->get('count'));
-        file_put_contents($_SERVER['DOCUMENT_ROOT']."/newsAll.txt", response()->json($newsAll), LOCK_EX);
+        $news = app(News::class);
+        file_put_contents($_SERVER['DOCUMENT_ROOT']."/newsAll.txt", response()->json($news->downloadNews($request->get('count'))), LOCK_EX);
         return response()->download('newsAll.txt');
     }
 }

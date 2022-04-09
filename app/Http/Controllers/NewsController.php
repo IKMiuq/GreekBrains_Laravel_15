@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\News;
 use Faker\Factory;
 use Illuminate\Http\Request;
 
@@ -13,19 +15,19 @@ class NewsController extends Controller
      */
 
     public function sections() {
-        $newsSection = $this->getSections(3);
-        return view('news.sections', compact('newsSection'));
+        $category = app(Category::class);
+        return view('news.sections', ['category' => $category->getCategories()]);
     }
 
-    public function newsAll() {
-        $newsAll = $this->getNews(0, 0, 15);
-        return view('news.list', compact('newsAll'));
+    public function newsAll($newsId) {
+        $news = app(News::class);
+        return view('news.list', ['newsAll' => $news->getNewsByCategory($newsId)]);
     }
 
 
-    public function news($id)
+    public function news($section, $id)
     {
-        $newsDetail = $this->getNews(0, $id);
-        return view("news.detail", compact('newsDetail'));
+        $news = app(News::class);
+        return view('news.detail', ['newsDetail' => $news->getNewsById($id)[0]]);
     }
 }
