@@ -34,7 +34,7 @@
                 <div class="col-sm-4 offset-md-1 py-4">
                     <h4 class="text-white">Новости</h4>
                     <ul class="list-unstyled">
-                        <li><a href="{{ route('news.') }}">News</a></li>
+                        <li><a href="{{ route('news.') }}">Новости</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-4 offset-md-1 py-4">
@@ -42,18 +42,17 @@
                         @if (Route::has('login'))
                             @auth
                                 <li><a href="{{ url('/home') }}"
-                                       class="text-sm text-gray-700 dark:text-gray-500 underline">Home</a></li>
+                                       class="text-sm text-gray-700 dark:text-gray-500 underline">Новости</a></li>
                             @else
                                 <li><a href="{{ route('login') }}"
-                                       class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a></li>
+                                       class="text-sm text-gray-700 dark:text-gray-500 underline">Вход</a></li>
                                 @if (Route::has('register'))
                                     <li><a href="{{ route('register') }}"
-                                           class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                                           class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Регистрация</a>
                                     </li>
                                 @endif
                             @endauth
                         @endif
-                        <li><a href="{{ route('admin.index') }}">Admin</a></li>
                     </ul>
                 </div>
             </div>

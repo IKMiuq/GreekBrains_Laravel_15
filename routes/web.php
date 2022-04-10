@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\IndexController;
 use App\Http\Controllers\NewsController;
-use \App\Http\Controllers\LoginController;
+use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\IndexController as AIndexController;
+use App\Http\Controllers\IndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,88 +22,119 @@ use App\Http\Controllers\Admin\IndexController as AIndexController;
 // });
 
 
-Route::group(
-    [
-        'prefix' => 'admin',
-        'namespace' => 'App\Http\Controllers\Admin',
-        'as' => 'admin.'
-    ],
-    function () {
-        Route::get('/', [
-            'uses' => 'IndexController',
-            'as' => 'index'
-        ]);
+Route::group(['middleware' => 'auth'], function () {
+    Route::group(['prefix' => '/account', 'as' => 'account'], function () {
+        Route::get('/', AccountController::class)->name('index');
+        Route::get('/logout', function () {
+            \Auth::logout();
+            return redirect()->route('login');
+        })->name('logout');
+    });
+    //admin routes
+    Route::group(
+        [
+            'prefix' => 'admin',
+            'namespace' => 'App\Http\Controllers\Admin',
+            'as' => 'admin.',
+            'middleware' => 'admin.check'
+        ],
+        function () {
+            Route::get('/', [
+                'uses' => 'IndexController',
+                'as' => 'index'
+            ]);
 
-        Route::group(
-            [
-                'prefix' => 'categories',
-                'as' => 'categories.'
-            ],
-            function () {
-                Route::get('/', [
-                    'uses' => 'CategoryController@index',
-                    'as' => 'index'
-                ]);
-                Route::get('/edit/{category}/', [
-                    'uses' => 'CategoryController@edit',
-                    'as' => 'edit'
-                ]);
-                Route::get('/create', [
-                    'uses' => 'CategoryController@create',
-                    'as' => 'create'
-                ]);
-                Route::put('/update/{category}/', [
-                    'uses' => 'CategoryController@update',
-                    'as' => 'update'
-                ]);
-                Route::post('/store', [
-                    'uses' => 'CategoryController@store',
-                    'as' => 'store'
-                ]);
-                Route::get('/delete', [
-                    'uses' => 'CategoryController@delete',
-                    'as' => 'delete'
-                ]);
-            }
-        );
-        Route::group(
-            [
-                'prefix' => 'news',
-                'as' => 'news.'
-            ],
-            function () {
-                Route::get('/', [
-                    'uses' => 'NewsController@index',
-                    'as' => 'index'
-                ]);
-                Route::post('/download', [
-                    'uses' => 'NewsController@download',
-                    'as' => 'download'
-                ]);
-                Route::get('/edit/{news}', [
-                    'uses' => 'NewsController@edit',
-                    'as' => 'edit'
-                ]);
-                Route::get('/create', [
-                    'uses' => 'NewsController@create',
-                    'as' => 'create'
-                ]);
-                Route::put('/update/{news}/', [
-                    'uses' => 'NewsController@update',
-                    'as' => 'update'
-                ]);
-                Route::get('/delete', [
-                    'uses' => 'NewsController@delete',
-                    'as' => 'delete'
-                ]);
-                Route::post('/store', [
-                    'uses' => 'NewsController@store',
-                    'as' => 'store'
-                ]);
-            }
-        );
-    }
-);
+            Route::group(
+                [
+                    'prefix' => 'categories',
+                    'as' => 'categories.'
+                ],
+                function () {
+                    Route::get('/', [
+                        'uses' => 'CategoryController@index',
+                        'as' => 'index'
+                    ]);
+                    Route::get('/edit/{category}/', [
+                        'uses' => 'CategoryController@edit',
+                        'as' => 'edit'
+                    ]);
+                    Route::get('/create', [
+                        'uses' => 'CategoryController@create',
+                        'as' => 'create'
+                    ]);
+                    Route::put('/update/{category}/', [
+                        'uses' => 'CategoryController@update',
+                        'as' => 'update'
+                    ]);
+                    Route::post('/store', [
+                        'uses' => 'CategoryController@store',
+                        'as' => 'store'
+                    ]);
+                    Route::get('/delete', [
+                        'uses' => 'CategoryController@delete',
+                        'as' => 'delete'
+                    ]);
+                }
+            );
+            Route::group(
+                [
+                    'prefix' => 'news',
+                    'as' => 'news.'
+                ],
+                function () {
+                    Route::get('/', [
+                        'uses' => 'NewsController@index',
+                        'as' => 'index'
+                    ]);
+                    Route::post('/download', [
+                        'uses' => 'NewsController@download',
+                        'as' => 'download'
+                    ]);
+                    Route::get('/edit/{news}', [
+                        'uses' => 'NewsController@edit',
+                        'as' => 'edit'
+                    ]);
+                    Route::get('/create', [
+                        'uses' => 'NewsController@create',
+                        'as' => 'create'
+                    ]);
+                    Route::put('/update/{news}/', [
+                        'uses' => 'NewsController@update',
+                        'as' => 'update'
+                    ]);
+                    Route::get('/delete', [
+                        'uses' => 'NewsController@delete',
+                        'as' => 'delete'
+                    ]);
+                    Route::post('/store', [
+                        'uses' => 'NewsController@store',
+                        'as' => 'store'
+                    ]);
+                }
+            );
+            Route::group(
+                [
+                    'prefix' => 'users',
+                    'as' => 'users.'
+                ],
+                function () {
+                    Route::get('/', [
+                        'uses' => 'UserController@index',
+                        'as' => 'index'
+                    ]);
+                    Route::post('/update', [
+                        'uses' => 'UserController@update',
+                        'as' => 'update'
+                    ]);
+                    Route::get('/delete', [
+                        'uses' => 'UserController@delete',
+                        'as' => 'delete'
+                    ]);
+                }
+            );
+        }
+    );
+});
 
 Route::get('/', [IndexController::class, 'index']);
 Route::group(
@@ -117,7 +148,7 @@ Route::group(
             'uses' => 'LoginController@index',
             'as' => ''
         ]);
-        Route::post('/', [
+        Route::post('/in', [
             'uses' => 'LoginController@logIn',
             'as' => 'in'
         ]);
@@ -135,3 +166,7 @@ Route::group(
         Route::get('/news/{section}/{news_id}', [NewsController::class, 'news'])->name('detail');
     }
 );
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
