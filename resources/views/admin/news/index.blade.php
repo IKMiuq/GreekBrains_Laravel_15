@@ -9,13 +9,17 @@
             </div>
         </div>
     </div>
+    @include('inc.massages')
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th>#ID</th>
+                <th>Категория</th>
                 <th>Заголовок</th>
+                <th>Статус</th>
                 <th>Описание</th>
+                <th>Последнее изменение</th>
                 <th>Опции</th>
             </tr>
             </thead>
@@ -23,12 +27,15 @@
             @forelse($news as $new)
                 <tr>
                     <th>{{$new->id}}</th>
+                    <th>{{$new->category->title}}</th>
                     <th>{{$new->title}}</th>
+                    <th>{{$new->status}}</th>
                     <th>{{$new->description}}</th>
+                    <th>@if($new->updated_at) {{$new->updated_at->format('d-m-Y H:i')}} @endif</th>
                     <th>
                         <a href="{{route('admin.news.edit', ['news' => $new->id])}}">Ред.</a>
                         &nbsp;
-                        <a class="text-danger" href="{{route('admin.categories.delete', ['id' => $new->id])}}">Уд.</a>
+                        <a class="text-danger" href="{{route('admin.news.delete', ['id' => $new->id])}}">Уд.</a>
                     </th>
                 </tr>
             @empty
@@ -39,6 +46,7 @@
             </tbody>
         </table>
     </div>
+    {{$news->links()}}
     <h3>Скачать новости</h3>
     <form action="{{route('admin.news.download')}}" method="post">
         @csrf

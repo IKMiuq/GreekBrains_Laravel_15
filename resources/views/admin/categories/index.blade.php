@@ -9,6 +9,7 @@
             </div>
         </div>
     </div>
+    @include('inc.massages')
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
@@ -16,6 +17,7 @@
                     <th>#ID</th>
                     <th>Заголовок</th>
                     <th>Описание</th>
+                    <th>Число новостей</th>
                     <th>Опции</th>
                 </tr>
             </thead>
@@ -25,6 +27,7 @@
                     <th>{{$category->id}}</th>
                     <th>{{$category->title}}</th>
                     <th>{{$category->description}}</th>
+                    <th>{{$category->news_count}}</th>
                     <th>
                         <a href="{{route('admin.categories.edit', ['category' => $category->id])}}">Ред.</a>
                         &nbsp;
@@ -38,5 +41,6 @@
             @endforelse
             </tbody>
         </table>
+        {{$categories->links()}}
     </div>
 @endsection

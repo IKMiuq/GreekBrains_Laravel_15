@@ -14,9 +14,11 @@
                     <p class="card-text">{{ $section->description }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
+                            @if($section->news_count >0)
                             <a href="{{route('news.sections', ['section' => $section->id])}}" type="button" class="btn btn-sm btn-outline-secondary">Перейти -></a>
+                            @endif
                         </div>
-                        <small class="text-muted">9 mins</small>
+                        <small class="text-muted">Всего новостей: {{$section->news_count}}</small>
                     </div>
                 </div>
             </div>

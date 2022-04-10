@@ -12,14 +12,10 @@
     <div>
         <form action="{{route('admin.categories.store')}}" method="post" id="addNew">
             @csrf
-            @if($errors->any())
-                @foreach($errors->all() as $error)
-                    <x-alert type="danger" :message="$error"></x-alert>
-                @endforeach
-            @endif
+            @include('inc.massages')
             <div class="form-group">
-                <label for="name">Название</label>
-                <input id="name" class="form-control" type="text" name="name" placeholder="name" value="{{old('name')}}"><br/>
+                <label for="title">Название</label>
+                <input id="title" class="form-control" type="text" name="title" placeholder="title" value="{{old('title')}}"><br/>
                 <label for="preview">Изображение</label>
                 <input id="preview" class="form-control" name="preview" type="file" value="{{old('file')}}"><br/>
                 <label for="description">Описание</label>

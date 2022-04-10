@@ -10,14 +10,16 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $category = app(Category::class);
-        return view('admin.categories.index', ['categories' => $category->getCategories()]);
+        return view('admin.categories.index', ['categories' => Category::active()->withCount('news')->paginate(5)]);
     }
 
-    public function edit(Request $request)
+    /**
+     * @param Category $category
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function edit(Category $category)
     {
-        $news = app(Category::class);
-        return view('admin.categories.edit', ['category' => $news->getCategoryById($request->get('category'))]);
+        return view('admin.categories.edit', ['category' => $category]);
     }
 
     public function create()
@@ -25,19 +27,41 @@ class CategoryController extends Controller
         return view('admin.categories.create');
     }
 
+    public function update(Request $request, Category $category)
+    {
+        $request->validate([
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string']
+        ]);
+        if ($category->fill($request->only('title', 'description'))->save()) {
+            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно обновлена');
+        }
+        return back()->with('error', 'Не удалось');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string']
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string']
         ]);
-        dd($_REQUEST);
+        $data = $request->only(['title', 'description']);
+        $category = Category::create($data);
+        if ($category) {
+            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно добавлена');
+        }
+        return back()->with('error', 'Не удалось');
     }
 
     public function delete(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string']
+            'id' => ['required', 'integer']
         ]);
-        dd($_REQUEST);
+        $category = Category::destroy($request->get('id'));
+        if ($category) {
+            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно удалена');
+        }
+        return back()->with('error', 'Не удалось');
     }
 }

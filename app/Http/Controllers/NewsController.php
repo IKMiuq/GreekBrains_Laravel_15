@@ -15,19 +15,16 @@ class NewsController extends Controller
      */
 
     public function sections() {
-        $category = app(Category::class);
-        return view('news.sections', ['category' => $category->getCategories()]);
+        return view('news.sections', ['category' => Category::active()->withCount('news')->get()]);
     }
 
-    public function newsAll($newsId) {
-        $news = app(News::class);
-        return view('news.list', ['newsAll' => $news->getNewsByCategory($newsId)]);
+    public function newsAll($section) {
+        return view('news.list', ['newsAll' => News::where('category_id', '=', $section)->with('category')->get()]);
     }
 
 
-    public function news($section, $id)
+    public function news($section, News $news_id)
     {
-        $news = app(News::class);
-        return view('news.detail', ['newsDetail' => $news->getNewsById($id)]);
+        return view('news.detail', ['newsDetail' => $news_id]);
     }
 }
