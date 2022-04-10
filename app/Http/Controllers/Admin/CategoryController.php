@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\CreateRequest;
+use App\Http\Requests\Category\EditRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -27,25 +29,17 @@ class CategoryController extends Controller
         return view('admin.categories.create');
     }
 
-    public function update(Request $request, Category $category)
+    public function update(EditRequest $request, Category $category)
     {
-        $request->validate([
-            'title' => ['required', 'string'],
-            'description' => ['required', 'string']
-        ]);
-        if ($category->fill($request->only('title', 'description'))->save()) {
+        if ($category->fill($request->validated())->save()) {
             return redirect()->route('admin.categories.index')->with('success', 'Запись успешно обновлена');
         }
         return back()->with('error', 'Не удалось');
     }
 
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string'],
-            'description' => ['required', 'string']
-        ]);
-        $data = $request->only(['title', 'description']);
+        $data = $request->validated();
         $category = Category::create($data);
         if ($category) {
             return redirect()->route('admin.categories.index')->with('success', 'Запись успешно добавлена');
