@@ -17,7 +17,7 @@ class CategoryController extends Controller
     public function edit(Request $request)
     {
         $news = app(Category::class);
-        return view('admin.categories.edit', ['category' => $news->getCategoryById($request->get('category'))[0]]);
+        return view('admin.categories.edit', ['category' => $news->getCategoryById($request->get('category'))]);
     }
 
     public function create()

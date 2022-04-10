@@ -42,11 +42,7 @@ class News extends Model
 
     public function getNewsById(int $id) :mixed
     {
-        return \DB::table($this->table)
-            ->select('*')
-            ->where('id', '=', $id)
-            ->get()
-            ->toArray();
+        return \DB::table($this->table)->find($id);
     }
 
     public function downloadNews(int $count) :mixed

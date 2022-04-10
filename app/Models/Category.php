@@ -25,10 +25,6 @@ class Category extends Model
 
     public function getCategoryById(int $id) :mixed
     {
-        return \DB::table($this->table)
-            ->select('*')
-            ->where('id', '=', $id)
-            ->get()
-            ->toArray();
+        return \DB::table($this->table)->find($id);
     }
 }

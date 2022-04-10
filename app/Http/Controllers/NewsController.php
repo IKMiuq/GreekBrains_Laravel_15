@@ -28,6 +28,6 @@ class NewsController extends Controller
     public function news($section, $id)
     {
         $news = app(News::class);
-        return view('news.detail', ['newsDetail' => $news->getNewsById($id)[0]]);
+        return view('news.detail', ['newsDetail' => $news->getNewsById($id)]);
     }
 }
