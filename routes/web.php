@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\NewsController;
+use \App\Http\Controllers\LoginController;
+use App\Http\Controllers\Admin\IndexController as AIndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +17,109 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+
+Route::group(
+    [
+        'prefix' => 'admin',
+        'namespace' => 'App\Http\Controllers\Admin',
+        'as' => 'admin.'
+    ],
+    function () {
+        Route::get('/', [
+            'uses' => 'IndexController',
+            'as' => 'index'
+        ]);
+
+        Route::group(
+            [
+                'prefix' => 'categories',
+                'as' => 'categories.'
+            ],
+            function () {
+                Route::get('/', [
+                    'uses' => 'CategoryController@index',
+                    'as' => 'index'
+                ]);
+                Route::get('/edit', [
+                    'uses' => 'CategoryController@edit',
+                    'as' => 'edit'
+                ]);
+                Route::get('/create', [
+                    'uses' => 'CategoryController@create',
+                    'as' => 'create'
+                ]);
+                Route::post('/store', [
+                    'uses' => 'CategoryController@store',
+                    'as' => 'store'
+                ]);
+                Route::post('/delete', [
+                    'uses' => 'CategoryController@delete',
+                    'as' => 'delete'
+                ]);
+            }
+        );
+        Route::group(
+            [
+                'prefix' => 'news',
+                'as' => 'news.'
+            ],
+            function () {
+                Route::get('/', [
+                    'uses' => 'NewsController@index',
+                    'as' => 'index'
+                ]);
+                Route::post('/download', [
+                    'uses' => 'NewsController@download',
+                    'as' => 'download'
+                ]);
+                Route::get('/edit', [
+                    'uses' => 'NewsController@edit',
+                    'as' => 'edit'
+                ]);
+                Route::get('/create', [
+                    'uses' => 'NewsController@create',
+                    'as' => 'create'
+                ]);
+                Route::post('/store', [
+                    'uses' => 'NewsController@store',
+                    'as' => 'store'
+                ]);
+            }
+        );
+    }
+);
+
+Route::get('/', [IndexController::class, 'index']);
+Route::group(
+    [
+        'prefix' => 'login',
+        'namespace' => 'App\Http\Controllers',
+        'as' => 'login.'
+    ],
+    function () {
+        Route::get('/', [
+            'uses' => 'LoginController@index',
+            'as' => ''
+        ]);
+        Route::post('/', [
+            'uses' => 'LoginController@logIn',
+            'as' => 'in'
+        ]);
+    }
+);
+
+
+Route::group(
+    [
+        'as' => 'news.'
+    ],
+    function () {
+        Route::get('/news/', [NewsController::class, 'sections'])->name('');
+        Route::get('/news/{section}/', [NewsController::class, 'newsAll'])->name('sections');
+        Route::get('/news/{section}/{news_id}', [NewsController::class, 'news'])->name('detail');
+    }
+);
