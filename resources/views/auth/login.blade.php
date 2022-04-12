@@ -1,11 +1,17 @@
 @extends('layouts.app')
-
 @section('content')
+<link href="{{asset('css/bootstrap-social.css')}}" rel="stylesheet">
+<link href="{{asset('css/font-awesome.css')}}" rel="stylesheet">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Вход') }}</div>
+                <div class="card-header">
+                    {{ __('Вход') }}
+                    <a class="btn btn-social-icon btn-sm btn-vk" href="{{route('auth.redirect', ['network' => 'vkontakte'])}}"><i class="fa fa-vk"></i></a>
+                    <a class="btn btn-social-icon btn-sm btn-github" href="{{route('auth.redirect', ['network' => 'github'])}}"><i class="fa fa-github"></i></a>
+                </div>
+
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

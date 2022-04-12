@@ -1,10 +1,13 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\IndexController as AIndexController;
 use App\Http\Controllers\IndexController;
+use \App\Http\Controllers\Auth\SocialController;
+use \App\Http\Controllers\Admin\ParserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +26,10 @@ use App\Http\Controllers\IndexController;
 
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::group(['prefix' => '/account', 'as' => 'account'], function () {
+    Route::group(['prefix' => '/account', 'as' => 'account.'], function () {
         Route::get('/', AccountController::class)->name('index');
         Route::get('/logout', function () {
-            \Auth::logout();
+            Auth::logout();
             return redirect()->route('login');
         })->name('logout');
     });
@@ -43,6 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
                 'uses' => 'IndexController',
                 'as' => 'index'
             ]);
+
+            Route::get('parser', ParserController::class)->name('parser');
 
             Route::group(
                 [
@@ -168,5 +173,11 @@ Route::group(
 );
 
 Auth::routes();
+
+Route::group(['middleware'=>'guest'], function() {
+    Route::get('/auth/{network}/redirect', [SocialController::class, 'index'])->where('network', '\w+')->name('auth.redirect');
+    Route::get('/auth/{network}/callback', [SocialController::class, 'callback'])->name('auth.callback');
+    Route::get('/auth/{network}/create', [SocialController::class, 'create'])->name('auth.create');
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

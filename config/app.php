@@ -176,6 +176,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Orchestra\Parser\XmlServiceProvider::class,
+        App\Providers\AppServiceProvider::class,
+        SocialiteProviders\Manager\ServiceProvider::class,
 
     ],
 
@@ -191,7 +194,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // ...
+        'XmlParser' => \Orchestra\Parser\Xml\Facade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ])->toArray(),
 
 ];

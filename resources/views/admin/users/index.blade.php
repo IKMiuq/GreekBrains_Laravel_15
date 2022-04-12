@@ -17,6 +17,7 @@
                 <thead>
                 <tr>
                     <th>#ID</th>
+                    <th>Фото</th>
                     <th>Имя</th>
                     <th>Админ</th>
                 </tr>
@@ -25,6 +26,7 @@
                 @forelse($users as $user)
                     <tr>
                         <th>{{$user->id}}<input name='users[{{$user->id}}][id]' class="d-none" type="text" value="{{$user->id}}"></th>
+                        <th><img src="{{$user->avatar}}" style="width: 250px;"></th>
                         <th>{{$user->name}}</th>
                         <th><input name='users[{{$user->id}}][is_admin]' type="checkbox" @if($user->is_admin) checked @endif></th>
                         <th>                        &nbsp;
