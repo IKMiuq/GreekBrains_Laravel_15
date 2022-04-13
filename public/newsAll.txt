@@ -1,0 +1,6 @@
+HTTP/1.0 200 OK
+Cache-Control: no-cache, private
+Content-Type:  application/json
+Date:          Sat, 09 Apr 2022 21:44:57 GMT
+
+[{"id":1,"title":"Home Appliance Installer","image":"https:\/\/via.placeholder.com\/250x170.png\/005599?text=fugiat","status":"ACTIVE","author":"rbogisich","description":"Non tempora atque qui. Voluptatum quas est rerum modi ullam reprehenderit.","created_at":null,"updated_at":null,"category_id":4}]
