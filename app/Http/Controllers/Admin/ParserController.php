@@ -12,10 +12,11 @@ class ParserController extends Controller
      * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function __invoke(Request $request, Parser $parser)
+    public function __invoke(string $url, Parser $parser)
     {
-        dd($parser->setUrl('https://news.yandex.ru/music.rss')->getNews());
+        /** @var TYPE_NAME $url */
+        return $parser->setUrl($url)->getNews();
     }
 }

@@ -33,7 +33,7 @@ class ParserService implements Parser
                 'uses' => 'channel.image.url'
             ],
             'news' => [
-                'uses' => 'channel.item[title, link, guid, description, pubDate]'
+                'uses' => 'channel.item[title,link,image,enclosure,guid,description,pubDate]'
             ],
         ]);
     }

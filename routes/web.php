@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\IndexController as AIndexController;
 use App\Http\Controllers\IndexController;
 use \App\Http\Controllers\Auth\SocialController;
 use \App\Http\Controllers\Admin\ParserController;
+use \App\Http\Controllers\Admin\SourceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,17 @@ Route::group(['middleware' => 'auth'], function () {
             ]);
 
             Route::get('parser', ParserController::class)->name('parser');
+            Route::group(
+                [
+                    'prefix' => 'sources',
+                    'as' => 'sources.'
+                ],
+                function () {
+                    Route::get('/', [SourceController::class, 'index'])->name('index');
+                    Route::get('/{code}/update', [SourceController::class, 'update'])->name('update');
+                    Route::get('/store', [SourceController::class, 'store'])->name('store');
+                }
+            );
 
             Route::group(
                 [
